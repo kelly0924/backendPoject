@@ -11,6 +11,7 @@
     <input type="text" id="idValue">
     <input type="text" id="pwValue">
     <input type="button" value="로그인" onclick="loginEvent()">
+    <input type="button" value="회원가입" onclick="memberJoinEvent()">
 
     <script>
 
@@ -63,6 +64,9 @@
             })
         }
 
+        const memberJoinEvent = ()=>{
+            location.href="/memberJoin"//회원 가입을 클릭 할 시 memberJoin이라는 api를 호출 하겠다. 
+        }
     </script>
 </body>
 </html>

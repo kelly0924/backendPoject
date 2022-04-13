@@ -31,6 +31,15 @@ app.post("/login",(req,res)=>{
     res.send(result)// 값만 보내 줄것이다. 값을 보내  때는 send로 보내 준다.
 })
 
+//회원 가입 API
+
+app.get("/memberJoin",(req,res)=>{
+    res.sendFile(__dirname + "/memberJoin.html")
+})
+
+
+
+
 
 app.listen(port,()=>{
     console.log(port + " http 와 통신 할것이다.")
