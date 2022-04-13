@@ -7,12 +7,23 @@
 </head>
 <body>
     
-   id: <input type="text" >
-   pw:<input type="text">
-   <input type="button" value="회원가입" onclick="">
+   id: <input type="text" id="userId" >
+   pw:<input type="text" id="userPw">
+   <input type="button" value="회원가입" onclick="memberJoinDbEvent()">
 
    <script>
-       
+       const memberJoinDbEvent =()=>{
+           fetch("/memberJoinPage",{
+               "method":"get",
+               "headers":{
+                   "Content-Type":"application/json"
+               },
+               "body":JSON.stringify({//여기에 값을 /memberJoinPage 로 보내겠다. 
+                   "id":document.getElementById("userId").value,
+                   "pw":document.getElementById("userPw").value,
+               })
+           })
+       }
    </script>
 </body>
 </html>

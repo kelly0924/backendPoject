@@ -4,6 +4,16 @@ const express=require("express")
 const app=express()//express 객체를 생성히고
 const port=8000
 app.use(express.json()) //json을 인식해주도록 설정
+//db 설정 해주기 
+const mariadb=require("mariadb")//디비연동을 위해 가져 오기 
+const connection = mariadb.createConnection({
+    host: '127.0.0.1',
+    port:3306,
+    user: 'backendProject',
+    password: '1234',
+    database: 'backendProjectDB'
+});
+connection.connect();
 
 
 app.get("/",(req,res)=>{
@@ -18,7 +28,7 @@ app.get("/loginPage",(req,res)=>{
 app.post("/login",(req,res)=>{
     //프론트엔드로 부터 값을 받아 오기, require
     const idValue= req.body.id
-    const pwValue= req.body.pwValue
+    const pwValue= req.body.pw
     //프론트 엔드로 보내 줄값 json으로 받았으니까 json으로 보내 줄것이다. 
     const result ={
         "sucess":false
@@ -37,6 +47,12 @@ app.get("/memberJoin",(req,res)=>{
     res.sendFile(__dirname + "/memberJoin.html")
 })
 
+app.get("/memberJoinPage",(req,res)=>{
+    const usId=req.body.id
+    const uspw=req.body.pw
+
+
+})
 
 
 
