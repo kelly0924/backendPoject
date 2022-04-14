@@ -31,13 +31,30 @@ app.post("/login",(req,res)=>{
     const idValue= req.body.id
     const pwValue= req.body.pw
     //프론트 엔드로 보내 줄값 json으로 받았으니까 json으로 보내 줄것이다. 
-    const result ={
+    let result ={
         "sucess":false
     }
     //로그인 체크 알고리즘 디비에서 데이터를 불러서 비교를 해서 보내 주기 
-    if(idValue == "stageus" && pwValue=="1234"){
-        result.sucess=true
-    }
+    mariadb.connect(function(err) {//디 연동하기 
+        if (err) throw err
+        console.log("Connected!")
+    })
+    let sql="SELECT * FROM user"
+    mariadb.query(sql,function(err, rows,fields){
+        if(err){
+            console.log("err")
+        }else{
+            for(let index =0; index<rows.length; index++){
+                console.log(rows[index].userId, rows[index].userPw)
+                console.log(idValue,pwValue)
+                if(idValue == rows[index].userId && pwValue == rows[index].userPw){
+                    result.sucess=true
+                    console.log("if 문 들어 온다")
+                }
+
+            }
+        }
+    })
     //프론드에게 값을 반환
     res.send(result)// 값만 보내 줄것이다. 값을 보내  때는 send로 보내 준다.
 })
@@ -67,6 +84,7 @@ app.post("/memberJoinPage",(req,res)=>{
         else{
             console.log("save user impormation")
             result.sucess=true// 회원 가입이 잘 됬는지를 체크 하기 위한 것 
+           // res.redirect("/loginPage")
         }
     })
     mariadb.end()
