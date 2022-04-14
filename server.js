@@ -5,17 +5,18 @@ const app=express()//express 객체를 생성히고
 const port=8000
 app.use(express.json()) //json을 인식해주도록 설정
 //db 설정 해주기 
-const mariadb=require("mariadb")//디비연동을 위해 가져 오기 
-const connection = mariadb.createConnection({
-    host: '127.0.0.1',
-    port:3306,
-    user: 'backendProject',
-    password: '1234',
-    database: 'backendProjectDB'
-});
-connection.connect();
-
-
+const mariadb=require("./mariaDB")//미리 만들어 놓은 파일을 불러 오겠다. 
+// const connection = mariadb.createConnection({
+//     host: '127.0.0.1',
+//     port:3306,
+//     user: 'backendProject',
+//     password: '1234',
+//     database: 'backendProjectDB'
+// });
+// connection.connect(function(err) {
+//     if (err) throw err;
+//     console.log("Connected!");
+// });  
 app.get("/",(req,res)=>{
     res.sendFile(__dirname+"/index.html")
 })
@@ -47,14 +48,32 @@ app.get("/memberJoin",(req,res)=>{
     res.sendFile(__dirname + "/memberJoin.html")
 })
 
-app.get("/memberJoinPage",(req,res)=>{
+app.post("/memberJoinPage",(req,res)=>{
     const usId=req.body.id
-    const uspw=req.body.pw
+    const usPw=req.body.pw
+    let result={
+        "sucess":false
+    }
+    mariadb.connect(function(err) {//디 연동하기 
+        if (err) throw err
+        console.log("Connected!")
+    })
+    let sql="INSERT INTO user(userId,userPw) VALUES(?,?)"
+    let paramiter=[usId,usPw]
+    mariadb .query(sql,paramiter, function(err,rows,fields){
+        if(err){
+            console.log("err")
+        }
+        else{
+            console.log("save user impormation")
+            result.sucess=true// 회원 가입이 잘 됬는지를 체크 하기 위한 것 
+        }
+    })
+    mariadb.end()
 
-
+    res.send(result)//성공 하였다면 true 아니면 false를 프론트엔드에게 보내 줄것이다. 
+    // res.sendFile(__dirname + "/loginPage.html")
 })
-
-
 
 
 app.listen(port,()=>{

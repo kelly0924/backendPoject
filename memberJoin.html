@@ -13,17 +13,28 @@
 
    <script>
        const memberJoinDbEvent =()=>{
-           fetch("/memberJoinPage",{
-               "method":"get",
-               "headers":{
-                   "Content-Type":"application/json"
-               },
+          let result = fetch("/memberJoinPage",{
+            "method": "POST", //요청하는   제이쓴 키 값으로 되였있다. 
+                "headers":{// 값을 여려가 들어 간다.
+                    "Content-Type":"application/json"
+                },
                "body":JSON.stringify({//여기에 값을 /memberJoinPage 로 보내겠다. 
                    "id":document.getElementById("userId").value,
                    "pw":document.getElementById("userPw").value,
                })
            })
-       }
+           .then((result)=>{
+               return result.json()
+           })
+           .then((result)=>{//??? 여기가 왜 안되지?
+               if(result.sucess == true){//회원 가입이 성공 할시 로그인 페이지로 이동
+                  alert("성공")
+                    location.href="/loginPage"
+               }else{//회원 가입을 실패 할 시 다시 회원 가입하러 가기 
+                    location.href="/memberJoin" 
+               }
+           })
+        }
    </script>
 </body>
 </html>
