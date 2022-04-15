@@ -1,0 +1,37 @@
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>addMemo</title>
+</head>
+<body>
+    <header></header>
+    <main>
+        <div>
+           <div> 내용: <input id="contents" type="text"></div> 
+           <div> 날자:<input id="userDate" type="date"></div>
+           <div> 작성자:<input id="memoWrite" type="text"></div>
+           <div><input type="button" value="저장" onclick="addMemoEvent()"> </div>
+        </div>
+    </main>
+
+    <script>
+        const addMemoEvent =()=>{
+
+            fetch("/addMemoPage",{
+                "method": "POST", //요청하는   제이쓴 키 값으로 되였있다. 
+                    "headers":{// 값을 여려가 들어 간다.
+                        "Content-Type":"application/json"
+                    },
+                "body":JSON.stringify({//여기에 값을 /memberJoinPage 로 보내겠다. 
+                    "contents":document.getElementById("contents").value,
+                    "date":document.getElementById("userDate").value,
+                    "write":document.getElementById("memoWrite").value,
+                })
+            })
+
+        }
+    </script>
+</body>
+</html>

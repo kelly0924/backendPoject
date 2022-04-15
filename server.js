@@ -103,16 +103,24 @@ app.get("/main",(req,res)=>{
 })
 //메모를 보여 주는 api
 app.get("/mainPage",(req,res)=>{
+    
+    let datas={}//json 선언만 하기 
+
     mariadb.connect(function(err) {//디 연동하기 
         if (err) throw err
         console.log("Connected!")
     })
     let sql="SELECT *FROM memo"
     mariadb.query(sql,function(err,rows,fields){
-        console.log(rows)
+        console.log(rows.length)
         res.send(rows)//rows 자체가 json상태로 되여 있다. 
     })
     mariadb.end()
+})
+
+//메모를 추가 하는 api
+app.get("/addMemo",(req,res)=>{
+    res.sendFile(__dirname + "/addMemoPage.html")
 })
 
 app.listen(port,()=>{
