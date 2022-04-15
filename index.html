@@ -9,9 +9,14 @@
 <body>
     <h1>스테이지 어스 백엔드 과정 페이지</h1>
     <input type="button" value="로그인 페이지" onclick="loginPageEvent()">
+    <input type="button" value="메인페이지" onclick="mainPageEvent()">
     <script>
         const loginPageEvent=()=>{
             location.href="/loginPage"//api 이름을 적어 줘야 한다. 
+        }
+
+        const mainPageEvent =()=>{
+            location.href="/main"
         }
     </script>
     

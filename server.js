@@ -45,11 +45,14 @@ app.post("/login",(req,res)=>{
             console.log("err")
         }else{
             for(let index =0; index<rows.length; index++){
-                console.log(rows[index].userId, rows[index].userPw)
-                console.log(idValue,pwValue)
-                if(idValue == rows[index].userId && pwValue == rows[index].userPw){
+                // console.log(rows[index].userId, rows[index].userPw)
+                // console.log(idValue,pwValue)
+                const dbId=rows[index].userId
+                const dbPw=rows[index].userPw
+                if(idValue == dbId && pwValue == dbPw){
                     result.sucess=true
-                    console.log("if 문 들어 온다")
+                    // console.log("if 문 들어 온다")
+                    // console.log(result.sucess)
                 }
 
             }
@@ -93,6 +96,24 @@ app.post("/memberJoinPage",(req,res)=>{
     // res.sendFile(__dirname + "/loginPage.html")
 })
 
+// 모든 사람의 메모를 보는 api 
+
+app.get("/main",(req,res)=>{
+    res.sendFile(__dirname + "/mainpage.html")
+})
+//메모를 보여 주는 api
+app.get("/mainPage",(req,res)=>{
+    mariadb.connect(function(err) {//디 연동하기 
+        if (err) throw err
+        console.log("Connected!")
+    })
+    let sql="SELECT *FROM memo"
+    mariadb.query(sql,function(err,rows,fields){
+        console.log(rows)
+        res.send(rows)//rows 자체가 json상태로 되여 있다. 
+    })
+    mariadb.end()
+})
 
 app.listen(port,()=>{
     console.log(port + " http 와 통신 할것이다.")
