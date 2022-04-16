@@ -51,7 +51,7 @@ app.post("/login",(req,res)=>{
                 const dbPw=rows[index].userPw
                 if(idValue == dbId && pwValue == dbPw){
                     result.sucess=true
-                    // console.log("if 문 들어 온다")
+                    // console.log("if 문 들어 온다")???
                     // console.log(result.sucess)
                 }
 
@@ -87,7 +87,7 @@ app.post("/memberJoinPage",(req,res)=>{
         else{
             console.log("save user impormation")
             result.sucess=true// 회원 가입이 잘 됬는지를 체크 하기 위한 것 
-           // res.redirect("/loginPage")
+            //return res.redirect("/loginPage") ??  에로가 나는 이유는 res 를 두번째 해서?? 
         }
     })
     mariadb.end()
@@ -115,12 +115,39 @@ app.get("/mainPage",(req,res)=>{
         console.log(rows.length)
         res.send(rows)//rows 자체가 json상태로 되여 있다. 
     })
-    mariadb.end()
+   // mariadb.end()
 })
 
 //메모를 추가 하는 api
 app.get("/addMemo",(req,res)=>{
     res.sendFile(__dirname + "/addMemoPage.html")
+})
+//저장 버튼을 누르면 호출 되는 api
+app.post("/addMemoPage",(req,res)=>{
+    const contentValue=req.body.contents
+    const dateValue=req.body.date
+    const writer=req.body.write
+
+    // mariadb.connect(function(err) {//디 연동하기 
+    //     if (err) throw err
+    //     console.log("Connected!")
+    // })//디비 연동을 두번을 해줘서 에러가 발생하였다. 
+    let sql="INSERT INTO memo(userId,memoContents,memoWriteDate) VALUES(?,?,?)"
+    let paramiter=[writer,contentValue,dateValue]//userId, memoContents, memoWriteDate
+    mariadb .query(sql,paramiter, function(err,rows,fields){
+        if(err){
+            console.log("err")
+        }
+        else{
+            console.log("add memo")
+        }
+    })
+
+    mariadb.end()
+   //return res.redirect("/main")
+  // return res.redirect('/main');
+  // res.render("/main")
+
 })
 
 app.listen(port,()=>{
